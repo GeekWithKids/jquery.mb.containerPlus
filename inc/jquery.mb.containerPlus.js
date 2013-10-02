@@ -15,6 +15,8 @@
  *  http://www.gnu.org/licenses/gpl.html
  *
  *  last modified: 11/06/13 0.06
+ *
+ *
  *  *****************************************************************************
  */
 
@@ -76,8 +78,9 @@
 		},
 
 		init:function(opt){
-			if(typeof opt === "string"){
-
+			if(typeof opt === "string"){	
+				//Added methodResult to store results from custom methods.
+				var methodResult = undefined;
 				var method=opt;
 				delete arguments[0];
 				var params = [];
@@ -89,9 +92,16 @@
 
 				if(jQuery.containerize.methods[method])
 					this.each(function(){
-						jQuery.containerize.methods[method].apply(this, params);
+						methodResult = jQuery.containerize.methods[method].apply(this, params);
+                                                
 					});
+				//check if methodResult is populate and return if it is.
+				if (methodResult !==undefined )
+                                    {
+                                     return methodResult;   
+                                    }else{
 				return false;
+                                    }
 			}
 
 			jQuery(window).on("resize",function(){
